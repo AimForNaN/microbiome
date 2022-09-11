@@ -91,6 +91,12 @@ export const useMicrobiomeStore = defineStore('microbiome', {
         },
     },
     getters: {
+        Bifidobacterium(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Bifidobacterium';
+            });
+        },
         Filtered(state) {
             var {csv} = state;
             return csv.filter((row) => {
@@ -109,6 +115,12 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                     });
                 }
                 return true;
+            });
+        },
+        Lactobacillus(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Lactobacillus';
             });
         },
     },
