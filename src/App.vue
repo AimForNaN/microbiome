@@ -5,12 +5,11 @@
         unref,
     } from 'vue';
 
-    import {parse} from './lib/parser.js';
+    import { useMicrobiomeStore } from './stores/microbiome.js';
     import Microbe from './components/Microbe.vue';
 
+    const store = useMicrobiomeStore();
     const state = reactive({
-        csv: [],
-        filter: '',
         tabs: [
             {
                 Active: false,
@@ -47,73 +46,18 @@
         ],
     });
 
-    const filtered = computed(() => {
-        var {csv} = state;
-        return csv.filter((row) => {
-            if (state.filter.length) {
-                let data = [
-                    row.Phylum,
-                    row.Genus,
-                    row.Order,
-                    row.Species,
-                    row.Strain,
-                ].map((item) => {
-                    return String(item).toLowerCase();
-                });
-                return data.find((item) => {
-                    return item.includes(state.filter.toLowerCase());
-                });
-            }
-            return true;
-        });
-    });
     const tab = computed(() => {
         return state.tabs.find((tab) => {
             return tab.Active;
         });
     });
     const categorized = computed(() => {
-        var categories = ['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Strain'];
-        var idx = categories.indexOf(unref(tab).Value);
-        var cat = categories[idx];
-        if (cat == 'Class') {
-            cat = 'Cls';
-        }
-        var reduced = unref(filtered).reduce((ret, item) => {
-            var name = item[cat];
-            if (name && !ret.has(name)) {
-                ret.set(name, {
-                    Abundance: 0,
-                    Categorization: item.Categorization.filter((item, i) => {
-                        return i <= idx;
-                    }),
-                    Comparison: ['Species', 'Strain'].includes(cat) && item.Comparison,
-                    Name: name,
-                });
-            }
-            if (name && ret.has(name)) {
-                let data = ret.get(name);
-                data.Abundance = round(data.Abundance + item.Abundance, 5);
-            }
-            return ret;
-        }, new Map());
-        return Array.from(reduced.values()).sort((a,b) => {
-            a = a.Name;
-            b = b.Name;
-            return a.localeCompare(b);
-        });
+        return store.getCategorized(unref(tab));
     });
 
     function onFileChange(e) {
-        state.csv = [];
         var input = e.target;
-        parse(input.files[0]).then((data) => {
-            state.csv = data;
-        });
-    }
-    function round(value, precision) {
-        var multiplier = Math.pow(10, precision || 0);
-        return Math.round(value * multiplier) / multiplier;
+        store.parseCsv(input.files[0]);
     }
     function setActiveTab(newTab) {
         unref(tab).Active = false;
@@ -124,7 +68,7 @@
 <template>
     <header>
         <button :class="{ active: tab.Active }" type="button" v-for="tab in state.tabs" @click="setActiveTab(tab)">{{tab.Value}}</button>
-        <input class="filter" placeholder="Filter" type="text" v-model="state.filter">
+        <input class="filter" placeholder="Filter" type="text" v-model="store.filter">
         <span class="flex-1"></span>
         <input class="file" type="file" @change="onFileChange">
     </header>
