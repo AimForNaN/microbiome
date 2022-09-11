@@ -35,6 +35,7 @@ export function parse(input) {
                         Comparison,
                         Family,
                         Genus,
+                        Name: Strain || Species,
                         Order,
                         Phylum,
                         Species,
@@ -43,11 +44,6 @@ export function parse(input) {
                 }
             },
             complete() {
-                ret.sort((a,b) => {
-                    a = a.Abundance;
-                    b = b.Abundance;
-                    return b - a;
-                });
                 resolve(ret);
             },
         });

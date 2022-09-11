@@ -3,14 +3,6 @@
 
     const props = defineProps({
         data: Object,
-        noStrain: {
-            type: Boolean,
-            default: false,
-        },
-        type: {
-            type: String,
-            default: 'Species',
-        },
     });
 
     const data = computed(() => {
@@ -22,7 +14,7 @@
     });
     const categorization = computed(() => {
         var row = unref(data);
-        return row.Categorization.slice(0, -2).reduce((ret, item, idx) => {
+        return row.Categorization.reduce((ret, item, idx) => {
             if (idx) {
                 ret.push('/');
             }
@@ -62,33 +54,32 @@
         var row = unref(data);
         return row.Strain;
     });
-    const type = computed(() => {
+    const name = computed(() => {
         var row = unref(data);
-        return row[props.type];
+        return row.Name;
     });
 </script>
 
 <template>
     <div class="microbe">
-        <span class="abundance">
-            {{abundance}}%
+        <span class="percent">{{abundance}}%</span>
+        <span class="name">{{name}}</span>
+        <span class="percent">
+            <template v-if="comparison">{{comparison}}%</template>
         </span>
-        <div class="summary">
-            <div class="name">{{type}}</div>
-            <div class="strain" v-if="strain && !noStrain">({{strain}})</div>
-            <div class="categorization">
-                <span v-for="item in categorization">{{item}}</span>
-            </div>
+        <div class="categorization">
+            <span v-for="item in categorization">{{item}}</span>
         </div>
     </div>
 </template>
 
 <style lang="less">
     .microbe {
-        @apply flex items-center min-h-0 min-w-0 space-x-4;
+        @apply grid items-baseline min-h-0 min-w-0 space-x-4;
+        grid-template-columns: 100px 1fr;
 
-        .abundance {
-            @apply flex;
+        .percent {
+            @apply flex justify-end;
         }
 
         .categorization {
@@ -101,14 +92,6 @@
 
         .name {
             @apply min-w-0 text-xl truncate;
-        }
-
-        .strain {
-            @apply min-w-0 text-sm truncate;
-        }
-
-        .summary {
-            @apply flex flex-col space-y-1;
         }
     }
 </style>
