@@ -73,6 +73,14 @@
         <input class="file" type="file" @change="onFileChange">
     </header>
     <div class="summary" v-if="tab.Value == 'Summary'">
+        <div class="bifidobacterium results">
+            <header class="col-span-3">Bifidobacterium</header>
+            <Microbe class="result" :data="row" v-for="row in store.Bifidobacterium" :key="row.Name"></Microbe>
+        </div>
+        <div class="lactobacillus results">
+            <header class="col-span-3">Lactobacillus</header>
+            <Microbe class="result" :data="row" v-for="row in store.Lactobacillus" :key="row.Name"></Microbe>
+        </div>
     </div>
     <div class="results" v-else>
         <Microbe class="result" :data="row" v-for="row in categorized" :key="row.Name"></Microbe>
@@ -83,8 +91,8 @@
 #app {
     @apply flex flex-col min-h-0 min-w-0;
 
-    header {
-        @apply bg-white border-b flex items-center p-2 space-x-2 sticky top-0;
+    > header {
+        @apply bg-white border-b flex items-center p-2 space-x-2 sticky top-0 z-10;
 
         button {
             @apply duration-500 px-3 py-2 rounded transition hover:bg-gray-50;
@@ -100,11 +108,19 @@
     }
 
     .results {
-        @apply grid grid-cols-1 min-w-0 p-8 lg:grid-cols-2 2xl:grid-cols-3;
+        @apply grid grid-cols-1 min-w-0 lg:grid-cols-2 2xl:grid-cols-3;
+
+        header {
+            @apply bg-white border-b px-5 py-3 sticky top-14;
+        }
 
         .result {
             @apply cursor-default duration-500 m-4 overflow-hidden p-2 rounded transition hover:ring-1;
         }
+    }
+
+    .summary {
+        @apply divide-y;
     }
 }
 </style>
