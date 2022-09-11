@@ -17,6 +17,7 @@ export function parse(input) {
                 var Order = row['ORDER'];
                 var Phylum = row['PHYLUM'];
                 var Species = row['SPECIES'];
+                var Subspecies = row['SUBSPECIES'];
                 var Strain = row['STRAIN'];
 
                 if (Species || Strain) {
@@ -29,13 +30,14 @@ export function parse(input) {
                             Family,
                             Genus,
                             Species,
+                            Subspecies,
                             Strain,
-                        ],
+                        ].filter(x => x),
                         Cls,
                         Comparison,
                         Family,
                         Genus,
-                        Name: Strain || Species,
+                        Name: Strain || Subspecies || Species,
                         Order,
                         Phylum,
                         Species,
