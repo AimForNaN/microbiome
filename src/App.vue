@@ -118,6 +118,7 @@
     <header>
         <button :class="{ active: tab.Active }" type="button" v-for="tab in state.tabs" @click="setActiveTab(tab)">{{tab.Value}}</button>
         <input class="filter" placeholder="Filter" type="text" v-model="state.filter">
+        <span class="flex-1"></span>
         <input class="file" type="file" @change="onFileChange">
     </header>
     <div class="summary" v-if="tab.Value == 'Summary'">
