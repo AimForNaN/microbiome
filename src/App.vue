@@ -159,7 +159,7 @@
         @apply grid grid-cols-1 min-w-0 p-8 lg:grid-cols-2 2xl:grid-cols-3;
 
         .result {
-            @apply cursor-default duration-500 m-4 overflow-hidden p-4 rounded transition hover:ring-1;
+            @apply cursor-default duration-500 m-4 overflow-hidden p-2 rounded transition hover:ring-1;
         }
     }
 }
