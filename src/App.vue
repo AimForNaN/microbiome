@@ -22,7 +22,7 @@
             },
             {
                 Active: false,
-                Value: 'Genus',
+                Value: 'Class',
             },
             {
                 Active: false,
@@ -31,6 +31,10 @@
             {
                 Active: false,
                 Value: 'Family',
+            },
+            {
+                Active: false,
+                Value: 'Genus',
             },
             {
                 Active: false,
@@ -69,9 +73,12 @@
         });
     });
     const categorized = computed(() => {
-        var categories = ['Phylum', 'Genus', 'Order', 'Family', 'Species', 'Strain'];
+        var categories = ['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Strain'];
         var idx = categories.indexOf(unref(tab).Value);
         var cat = categories[idx];
+        if (cat == 'Class') {
+            cat = 'Cls';
+        }
         var reduced = unref(filtered).reduce((ret, item) => {
             var name = item[cat];
             if (name && !ret.has(name)) {
@@ -91,9 +98,9 @@
             return ret;
         }, new Map());
         return Array.from(reduced.values()).sort((a,b) => {
-            a = a.Abundance;
-            b = b.Abundance;
-            return b - a;
+            a = a.Name;
+            b = b.Name;
+            return a.localeCompare(b);
         });
     });
 
