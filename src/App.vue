@@ -131,7 +131,7 @@
     <div class="summary" v-if="tab.Value == 'Summary'">
     </div>
     <div class="results" v-else>
-        <Microbe class="result" :data="row" v-for="(row, idx) in categorized" :key="idx"></Microbe>
+        <Microbe class="result" :data="row" v-for="row in categorized" :key="row.Name"></Microbe>
     </div>
 </template>
 
