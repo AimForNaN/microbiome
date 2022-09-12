@@ -10,7 +10,7 @@ export const useMicrobiomeStore = defineStore('microbiome', {
     actions: {
         getCategorized(tab) {
             var categories = ['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Strain'];
-            var idx = categories.indexOf(tab.Value);
+            var idx = categories.indexOf(tab);
             var cat = categories[idx];
             if (cat == 'Class') {
                 cat = 'Cls';
@@ -87,6 +87,12 @@ export const useMicrobiomeStore = defineStore('microbiome', {
         },
     },
     getters: {
+        Akkermansia(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Akkermansia';
+            });
+        },
         Bifidobacterium(state) {
             var {csv} = state;
             return csv.filter((row) => {

@@ -75,7 +75,7 @@
 
 <style lang="less">
     .microbe {
-        @apply grid items-baseline min-h-0 min-w-0 space-x-4;
+        @apply grid items-baseline min-h-0 min-w-0 p-2 space-x-4;
         grid-template-columns: 100px 1fr;
 
         .percent {

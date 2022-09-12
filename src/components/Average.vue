@@ -18,19 +18,20 @@
 
 <template>
     <div class="average">
-        <div class="amount">
-            {{average}}%
-        </div>
-        <slot></slot>
+        <slot :average="average">
+            <div class="amount">
+                {{average}}%
+            </div>
+        </slot>
     </div>
 </template>
 
 <style lang="less">
     .average {
-        @apply border flex flex-col items-center justify-center p-4 rounded;
+        @apply flex flex-col items-center justify-center p-12 rounded space-y-4 text-sm;
 
         .amount {
-            @apply p-6 text-3xl;
+            @apply text-4xl;
         }
     }
 </style>
