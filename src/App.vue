@@ -76,7 +76,7 @@
     </div>
     <template v-else-if="tab == 'Summary'">
         <div class="averages results">
-            <header>Your average compared to other people.</header>
+            <header>Your percentile compared to other people.</header>
             <Average class="result" :data="store[avg.Name]" :key="avg.Name" v-slot="{ average }" v-for="avg in averages">
                 <span class="amount">{{average}}%</span>
                 <span>{{avg.Name}}</span>
@@ -99,14 +99,6 @@
 
         > header {
             @apply bg-white border-b flex flex-wrap h-14 items-center px-2 space-x-2 sticky top-0 z-10;
-
-            button {
-                @apply duration-500 px-3 py-2 rounded transition hover:bg-gray-50;
-
-                &.active {
-                    @apply bg-gray-100;
-                }
-            }
         }
 
         .file {
@@ -133,7 +125,7 @@
             }
 
             .result {
-                @apply cursor-default duration-500 m-4 overflow-hidden rounded transition hover:ring-1;
+                @apply cursor-default m-4 overflow-hidden rounded transition hover:ring-1;
             }
         }
     }
