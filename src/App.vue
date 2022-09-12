@@ -22,6 +22,7 @@
         { Name: 'Parabacteroides', Goal: '> 66%' },
         { Name: 'Prevotella', Goal: '> 66%' },
         { Name: 'Staphylococcus', Goal: '< 33%' },
+        { Name: 'Fungi', Goal: '< 33%' },
     ];
     const store = useMicrobiomeStore();
     const tab = ref('Summary');

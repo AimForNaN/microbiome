@@ -107,8 +107,24 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                     return row.Genus == 'Staphylococcus';
                 });
             },
+            Fungi(state) {
+                var {Kingdom} = state;
+                return Kingdom.filter((row) => {
+                    return row.Kingdom == 'Fungi';
+                });
+            },
         },
         ...{
+            Domain(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Domain';
+                });
+            },
+            Kingdom(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Kingdom';
+                });
+            },
             Phylum(state) {
                 return state.csv.filter((item) => {
                     return item.Category == 'Phylum';

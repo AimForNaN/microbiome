@@ -11,6 +11,8 @@ export default class Row {
 
     static get Categories() {
         return [
+            'Domain',
+            'Kingdom',
             'Phylum',
             'Class',
             'Order',
@@ -41,6 +43,8 @@ export default class Row {
 
     get Categorization() {
         return [
+            this.Domain,
+            this.Kingdom,
             this.Phylum,
             this.Cls,
             this.Order,
@@ -60,12 +64,20 @@ export default class Row {
         return this.row['Your percentile (compared to other adults) *'];
     }
 
+    get Domain() {
+        return this.row['DOMAIN'];
+    }
+
     get Family() {
         return this.row['FAMILY'];
     }
 
     get Genus() {
         return this.row['GENUS'];
+    }
+
+    get Kingdom() {
+        return this.row['KINGDOM'];
     }
 
     get Name() {
