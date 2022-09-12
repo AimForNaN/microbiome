@@ -10,9 +10,14 @@
     import Microbe from './components/Microbe.vue';
 
     const averages = [
-        'Akkermansia',
-        'Bifidobacterium',
-        'Lactobacillus',
+        { Name: 'Akkermansia', Goal: '> 66%' },
+        { Name: 'Alistipes', Goal: '< 66%' },
+        { Name: 'Bifidobacterium', Goal: '> 66%' },
+        { Name: 'Escherichia', Goal: '< 33%' },
+        { Name: 'Faecalibacterium', Goal: '> 66%' },
+        { Name: 'Lactobacillus', Goal: '33-66%' },
+        { Name: 'Methanobacteria', Goal: '< 33%' },
+        { Name: 'Prevotella', Goal: '> 66%' },
     ];
     const store = useMicrobiomeStore();
     const tab = ref('Summary');
@@ -54,9 +59,10 @@
     <template v-else-if="tab == 'Summary'">
         <div class="averages results">
             <header>This is your average compared to other people.</header>
-            <Average class="result" :data="store[avg]" :key="avg" v-slot="{ average }" v-for="avg in averages">
+            <Average class="result" :data="store[avg.Name]" :key="avg.Name" v-slot="{ average }" v-for="avg in averages">
                 <span class="amount">{{average}}%</span>
-                <span>{{avg}}</span>
+                <span>{{avg.Name}}</span>
+                <span class="goal">Goal: {{avg.Goal}}</span>
             </Average>
         </div>
         <div class="bifidobacterium results">
@@ -78,7 +84,7 @@
         @apply flex flex-col min-h-0 min-w-0;
 
         > header {
-            @apply bg-white border-b flex flex-wrap h-14 items-center p-2 space-x-2 sticky top-0 z-10;
+            @apply bg-white border-b flex flex-wrap h-14 items-center px-2 space-x-2 sticky top-0 z-10;
 
             button {
                 @apply duration-500 px-3 py-2 rounded transition hover:bg-gray-50;

@@ -93,10 +93,46 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                 return row.Genus == 'Akkermansia';
             });
         },
+        Alistipes(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Alistipes';
+            });
+        },
         Bifidobacterium(state) {
             var {csv} = state;
             return csv.filter((row) => {
                 return row.Genus == 'Bifidobacterium';
+            });
+        },
+        Escherichia(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Escherichia';
+            });
+        },
+        Faecalibacterium(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Faecalibacterium';
+            });
+        },
+        Lactobacillus(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Lactobacillus';
+            });
+        },
+        Methanobacteria(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Cls == 'Methanobacteria';
+            });
+        },
+        Prevotella(state) {
+            var {csv} = state;
+            return csv.filter((row) => {
+                return row.Genus == 'Prevotella';
             });
         },
         Filtered(state) {
@@ -117,12 +153,6 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                     });
                 }
                 return true;
-            });
-        },
-        Lactobacillus(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Lactobacillus';
             });
         },
     },

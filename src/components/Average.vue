@@ -28,10 +28,14 @@
 
 <style lang="less">
     .average {
-        @apply flex flex-col items-center justify-center p-12 rounded space-y-4 text-sm;
+        @apply flex flex-col items-center justify-center p-12 rounded space-y-4;
 
         .amount {
             @apply text-4xl;
+        }
+
+        .goal {
+            @apply text-gray-500 text-sm;
         }
     }
 </style>
