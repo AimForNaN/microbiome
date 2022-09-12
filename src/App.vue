@@ -19,6 +19,7 @@
         { Name: 'Klebsiella', Goal: '< 33%' },
         { Name: 'Lactobacillus', Goal: '33-66%' },
         { Name: 'Methanobacteria', Goal: '< 33%' },
+        { Name: 'Parabacteroides', Goal: '> 66%' },
         { Name: 'Prevotella', Goal: '> 66%' },
         { Name: 'Staphylococcus', Goal: '< 33%' },
     ];
@@ -39,7 +40,12 @@
         return store.getCategorized(unref(tab));
     });
     const species = computed(() => {
-        var species = store.Species;
+        var species = store.Species.concat(store.Strain);
+        species.sort((a,b) => {
+            a = a.Name;
+            b = b.Name;
+            return a.localeCompare(b);
+        });
         return [
             'Bifidobacterium',
             'Lactobacillus',

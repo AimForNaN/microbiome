@@ -89,6 +89,12 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                     return row.Cls == 'Methanobacteria';
                 });
             },
+            Parabacteroides(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Parabacteroides';
+                });
+            },
             Prevotella(state) {
                 var {Genus} = state;
                 return Genus.filter((row) => {
@@ -102,7 +108,6 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                 });
             },
         },
-        // Categorized
         ...{
             Phylum(state) {
                 return state.csv.filter((item) => {
@@ -134,6 +139,11 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                     return item.Category == 'Species';
                 });
             },
+            Strain(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Strain';
+                });
+            },
         },
         Filtered(state) {
             return state.csv.filter((row) => {
@@ -142,7 +152,7 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                         return String(item).toLowerCase();
                     });
                     return data.find((item) => {
-                        return item.includes(state.filter.toLowerCase());
+                        return item.includes(state.Filter.toLowerCase());
                     });
                 }
                 return true;
