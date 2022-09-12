@@ -73,6 +73,7 @@
             <option :value="t" v-for="t in tabs">{{t}}</option>
         </select>
         <input class="filter" placeholder="Filter" type="text" v-model="store.Filter">
+        <i class="cursor-pointer mdi mdi-backspace" @click="store.Filter = ''" v-show="store.Filter"></i>
     </header>
     <div class="no-data" v-if="!store.csv.length">
         <label class="file">
