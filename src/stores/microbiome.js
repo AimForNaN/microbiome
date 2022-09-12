@@ -1,10 +1,6 @@
 import { defineStore } from 'pinia';
 import * as Papa from 'papaparse';
-
-function round(value, precision) {
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-}
+import round from './../lib/round.js';
 
 export const useMicrobiomeStore = defineStore('microbiome', {
     state: () => ({
