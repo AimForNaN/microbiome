@@ -13,11 +13,14 @@
         { Name: 'Akkermansia', Goal: '> 66%' },
         { Name: 'Alistipes', Goal: '33-66%' },
         { Name: 'Bifidobacterium', Goal: '> 66%' },
+        { Name: 'Enterococcus', Goal: '< 33%' },
         { Name: 'Escherichia', Goal: '< 33%' },
         { Name: 'Faecalibacterium', Goal: '> 66%' },
+        { Name: 'Klebsiella', Goal: '< 33%' },
         { Name: 'Lactobacillus', Goal: '33-66%' },
         { Name: 'Methanobacteria', Goal: '< 33%' },
         { Name: 'Prevotella', Goal: '> 66%' },
+        { Name: 'Staphylococcus', Goal: '< 33%' },
     ];
     const store = useMicrobiomeStore();
     const tab = ref('Summary');
@@ -35,6 +38,21 @@
     const categorized = computed(() => {
         return store.getCategorized(unref(tab));
     });
+    const species = computed(() => {
+        var species = store.Species;
+        return [
+            'Bifidobacterium',
+            'Lactobacillus',
+        ].reduce((ret, x) => {
+            ret.push({
+                Name: x,
+                Rows: species.filter((y) => {
+                    return x == y.Genus;
+                })
+            });
+            return ret;
+        }, []);
+    });
 
     function onFileChange(e) {
         var input = e.target;
@@ -47,7 +65,7 @@
         <select v-model="tab">
             <option :value="t" v-for="t in tabs">{{t}}</option>
         </select>
-        <input class="filter" placeholder="Filter" type="text" v-model="store.filter">
+        <input class="filter" placeholder="Filter" type="text" v-model="store.Filter">
     </header>
     <div class="no-data" v-if="!store.csv.length">
         <label class="file">
@@ -65,17 +83,13 @@
                 <span class="goal">Goal: {{avg.Goal}}</span>
             </Average>
         </div>
-        <div class="bifidobacterium results">
-            <header>Bifidobacterium</header>
-            <Microbe class="result" :data="row" v-for="row in store.Bifidobacterium" :key="row.Name"></Microbe>
-        </div>
-        <div class="lactobacillus results">
-            <header>Lactobacillus</header>
-            <Microbe class="result" :data="row" v-for="row in store.Lactobacillus" :key="row.Name"></Microbe>
+        <div class="results" v-for="x in species">
+            <header>{{x.Name}}</header>
+            <Microbe class="result" :data="row" v-for="row in x.Rows" :key="row.Name"></Microbe>
         </div>
     </template>
     <div class="results" v-else>
-        <Microbe class="result" :data="row" v-for="row in categorized" :key="row.Name"></Microbe>
+        <Microbe class="result" :data="row" v-for="row in categorized" :key="row"></Microbe>
     </div>
 </template>
 

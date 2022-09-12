@@ -1,43 +1,25 @@
 import { defineStore } from 'pinia';
 import * as Papa from 'papaparse';
+import Row from './../lib/Row.js';
 import round from './../lib/round.js';
 
 export const useMicrobiomeStore = defineStore('microbiome', {
     state: () => ({
+        Category: 'Species',
+        Filter: '',
         csv: [],
-        filter: '',
     }),
     actions: {
-        getCategorized(tab) {
-            var categories = ['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Strain'];
-            var idx = categories.indexOf(tab);
-            var cat = categories[idx];
-            if (cat == 'Class') {
-                cat = 'Cls';
-            }
-            var reduced = this.Filtered.reduce((ret, item) => {
-                var name = item[cat];
-                if (name && !ret.has(name)) {
-                    ret.set(name, {
-                        Abundance: 0,
-                        Categorization: item.Categorization.filter((item, i) => {
-                            return i <= idx;
-                        }),
-                        Comparison: ['Species', 'Strain'].includes(cat) && item.Comparison,
-                        Name: name,
-                    });
-                }
-                if (name && ret.has(name)) {
-                    let data = ret.get(name);
-                    data.Abundance = round(data.Abundance + item.Abundance, 5);
-                }
-                return ret;
-            }, new Map());
-            return Array.from(reduced.values()).sort((a,b) => {
+        getCategorized(category) {
+            var ret = this.Filtered.filter((item) => {
+                return item.Category == category;
+            });
+            ret.sort((a,b) => {
                 a = a.Name;
                 b = b.Name;
                 return a.localeCompare(b);
             });
+            return ret;
         },
         parseCsv(input) {
             this.csv = [];
@@ -46,106 +28,117 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                 header: true,
                 worker: true,
                 step: (row) => {
-                    row = row.data;
-                    var Abundance = row['Abundance (%)'];
-                    var Cls = row['CLASS'];
-                    var Comparison = row['Your percentile (compared to other adults) *'];
-                    var Family = row['FAMILY'];
-                    var Genus = row['GENUS'];
-                    var Order = row['ORDER'];
-                    var Phylum = row['PHYLUM'];
-                    var Species = row['SPECIES'];
-                    var Subspecies = row['SUBSPECIES'];
-                    var Strain = row['STRAIN'];
-
-                    if (Species || Strain) {
-                        this.csv.push({
-                            Abundance,
-                            Categorization: [
-                                Phylum,
-                                Cls,
-                                Order,
-                                Family,
-                                Genus,
-                                Species,
-                                Subspecies,
-                                Strain,
-                            ].filter(x => x),
-                            Cls,
-                            Comparison,
-                            Family,
-                            Genus,
-                            Name: Strain || Subspecies || Species,
-                            Order,
-                            Phylum,
-                            Species,
-                            Strain,
-                        });
-                    }
+                    this.csv.push(new Row(row.data));
                 },
             });
         },
     },
     getters: {
-        Akkermansia(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Akkermansia';
-            });
+        ...{
+            Akkermansia(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Akkermansia';
+                });
+            },
+            Alistipes(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Alistipes';
+                });
+            },
+            Bifidobacterium(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Bifidobacterium';
+                });
+            },
+            Enterococcus(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Enterococcus';
+                });
+            },
+            Escherichia(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Escherichia';
+                });
+            },
+            Faecalibacterium(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Faecalibacterium';
+                });
+            },
+            Klebsiella(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Klebsiella';
+                });
+            },
+            Lactobacillus(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Lactobacillus';
+                });
+            },
+            Methanobacteria(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Cls == 'Methanobacteria';
+                });
+            },
+            Prevotella(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Prevotella';
+                });
+            },
+            Staphylococcus(state) {
+                var {Genus} = state;
+                return Genus.filter((row) => {
+                    return row.Genus == 'Staphylococcus';
+                });
+            },
         },
-        Alistipes(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Alistipes';
-            });
-        },
-        Bifidobacterium(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Bifidobacterium';
-            });
-        },
-        Escherichia(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Escherichia';
-            });
-        },
-        Faecalibacterium(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Faecalibacterium';
-            });
-        },
-        Lactobacillus(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Lactobacillus';
-            });
-        },
-        Methanobacteria(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Cls == 'Methanobacteria';
-            });
-        },
-        Prevotella(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                return row.Genus == 'Prevotella';
-            });
+        // Categorized
+        ...{
+            Phylum(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Phylum';
+                });
+            },
+            Cls(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Class';
+                });
+            },
+            Order(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Order';
+                });
+            },
+            Family(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Family';
+                });
+            },
+            Genus(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Genus';
+                });
+            },
+            Species(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Species';
+                });
+            },
         },
         Filtered(state) {
-            var {csv} = state;
-            return csv.filter((row) => {
-                if (state.filter.length) {
-                    let data = [
-                        row.Phylum,
-                        row.Genus,
-                        row.Order,
-                        row.Species,
-                        row.Strain,
-                    ].map((item) => {
+            return state.csv.filter((row) => {
+                if (state.Filter.length) {
+                    let data = row.Categorization.map((item) => {
                         return String(item).toLowerCase();
                     });
                     return data.find((item) => {

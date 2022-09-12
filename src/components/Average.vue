@@ -28,7 +28,7 @@
 
 <style lang="less">
     .average {
-        @apply flex flex-col items-center justify-center p-12 rounded space-y-4;
+        @apply flex flex-col items-center justify-center p-12 rounded space-y-2 text-lg;
 
         .amount {
             @apply text-4xl;
