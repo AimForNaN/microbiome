@@ -58,7 +58,7 @@
     </div>
     <template v-else-if="tab == 'Summary'">
         <div class="averages results">
-            <header>This is your average compared to other people.</header>
+            <header>Your average compared to other people.</header>
             <Average class="result" :data="store[avg.Name]" :key="avg.Name" v-slot="{ average }" v-for="avg in averages">
                 <span class="amount">{{average}}%</span>
                 <span>{{avg.Name}}</span>
