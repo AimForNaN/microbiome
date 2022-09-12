@@ -84,8 +84,8 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                 });
             },
             Methanobacteria(state) {
-                var {Genus} = state;
-                return Genus.filter((row) => {
+                var {Cls} = state;
+                return Cls.filter((row) => {
                     return row.Cls == 'Methanobacteria';
                 });
             },
