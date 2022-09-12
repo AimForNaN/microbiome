@@ -11,7 +11,7 @@
 
     const averages = [
         { Name: 'Akkermansia', Goal: '> 66%' },
-        { Name: 'Alistipes', Goal: '< 66%' },
+        { Name: 'Alistipes', Goal: '33-66%' },
         { Name: 'Bifidobacterium', Goal: '> 66%' },
         { Name: 'Escherichia', Goal: '< 33%' },
         { Name: 'Faecalibacterium', Goal: '> 66%' },
