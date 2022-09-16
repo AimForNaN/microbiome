@@ -88,6 +88,7 @@ export default class Row {
             this.Family,
             this.Genus,
             this.Species,
+            this.Subspecies,
             this.Strain,
         ].filter(x => x);
         return ret.pop();

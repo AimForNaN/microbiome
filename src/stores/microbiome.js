@@ -155,6 +155,11 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                     return item.Category == 'Species';
                 });
             },
+            Subspecies(state) {
+                return state.csv.filter((item) => {
+                    return item.Category == 'Subspecies';
+                });
+            },
             Strain(state) {
                 return state.csv.filter((item) => {
                     return item.Category == 'Strain';

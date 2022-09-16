@@ -42,7 +42,11 @@
         return store.getCategorized(unref(tab));
     });
     const species = computed(() => {
-        var species = store.Species.concat(store.Strain);
+        var species = Array.from(new Set([
+            ...store.Species,
+            ...store.Strain,
+            ...store.Subspecies,
+        ]));
         species.sort((a,b) => {
             a = a.Name;
             b = b.Name;
