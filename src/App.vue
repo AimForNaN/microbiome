@@ -34,6 +34,7 @@
         'Family',
         'Genus',
         'Species',
+        'Subspecies',
         'Strain',
     ];
 
