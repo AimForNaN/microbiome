@@ -7,6 +7,7 @@
 
     import { useMicrobiomeStore } from './stores/microbiome.js';
     import Average from './components/Average.vue';
+    import FileLoader from './components/FileLoader.vue';
     import Microbe from './components/Microbe.vue';
 
     const averages = [
@@ -73,21 +74,20 @@
 </script>
 
 <template>
-    <header>
-        <select v-model="tab">
-            <option :value="t" v-for="t in tabs">{{t}}</option>
-        </select>
-        <input class="filter" placeholder="Filter" type="text" v-model="store.Filter">
-        <i class="cursor-pointer mdi mdi-backspace" @click="store.Filter = ''" v-show="store.Filter"></i>
-    </header>
     <div class="no-data" v-if="!store.csv.length">
-        <label class="file">
-            <span>Load full microbiome community file.</span>
-            <i class="mdi mdi-file-plus"></i>
-            <input type="file" @change="onFileChange">
-        </label>
+        <FileLoader @change="onFileChange"></FileLoader>
     </div>
     <template v-else-if="tab == 'Summary'">
+        <header>
+            <select v-model="tab">
+                <option :value="t" v-for="t in tabs">{{t}}</option>
+            </select>
+            <input class="filter" placeholder="Filter" type="text" v-model="store.Filter">
+            <i class="cursor-pointer mdi mdi-backspace" @click="store.Filter = ''" v-show="store.Filter"></i>
+            <FileLoader>
+                <i class="mdi mdi-file-plus"></i>
+            </FileLoader>
+        </header>
         <div class="averages results">
             <header>Your percentile compared to other people.</header>
             <Average class="result" :data="store[avg.Name]" :key="avg.Name" v-slot="{ average }" v-for="avg in averages">
@@ -112,14 +112,6 @@
 
         > header {
             @apply bg-white border-b flex flex-wrap h-14 items-center px-2 space-x-2 sticky top-0 z-10;
-        }
-
-        .file {
-            @apply border border-gray-300 cursor-pointer px-3 py-2 rounded space-x-2 transition hover:ring-2;
-
-            input {
-                @apply hidden;
-            }
         }
 
         .filter {
