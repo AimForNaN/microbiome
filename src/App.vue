@@ -1,7 +1,7 @@
 <script setup>
     import {
         computed,
-        ref,
+		shallowRef,
         unref,
     } from 'vue';
 
@@ -26,7 +26,7 @@
         { Name: 'Fungi', Goal: '< 33%' },
     ];
     const store = useMicrobiomeStore();
-    const tab = ref('Summary');
+    const tab = shallowRef('Summary');
     const tabs = [
         'Summary',
         'Phylum',
@@ -74,27 +74,39 @@
 </script>
 
 <template>
-    <div class="no-data" v-if="!store.csv.length">
-        <FileLoader @change="onFileChange"></FileLoader>
+    <div class="bg-white flex flex-1 items-center justify-center" v-if="!store.csv.length">
+        <FileLoader class="border rounded-md" @change="onFileChange">
+			<span>Load CSV file.</span>
+		</FileLoader>
     </div>
     <template v-else-if="tab == 'Summary'">
-        <header>
-            <select v-model="tab">
-                <option :value="t" v-for="t in tabs">{{t}}</option>
-            </select>
-            <input class="filter" placeholder="Filter" type="text" v-model="store.Filter">
-            <i class="cursor-pointer mdi mdi-backspace" @click="store.Filter = ''" v-show="store.Filter"></i>
-            <FileLoader>
-                <i class="mdi mdi-file-plus"></i>
-            </FileLoader>
-        </header>
-        <div class="averages results">
+		<header class="bg-gray-200 flex flex-wrap gap-px h-14 sticky top-0 z-10">
+			<select v-model="tab">
+				<option :value="t" v-for="t in tabs">{{t}}</option>
+			</select>
+			<input class="flex-1" placeholder="Filter" type="text" v-model="store.Filter">
+			<i class="cursor-pointer mdi mdi-backspace" @click="store.Filter = ''" v-show="store.Filter"></i>
+			<button class="mdi mdi-close"></button>
+		</header>
+        <!-- <div class="averages results">
             <header>Your percentile compared to other people.</header>
             <Average class="result" :data="store[avg.Name]" :key="avg.Name" v-slot="{ average }" v-for="avg in averages">
                 <span class="amount">{{average}}%</span>
                 <span>{{avg.Name}}</span>
                 <span class="goal">Goal: {{avg.Goal}}</span>
             </Average>
+        </div> -->
+        <div class="results">
+            <header>Detected in large amounts (Class)</header>
+            <Microbe class="result" :data="row" v-for="row in store.HighCountsClass" :key="row.Name"></Microbe>
+        </div>
+        <div class="results">
+            <header>Detected in large amounts (Genus)</header>
+            <Microbe class="result" :data="row" v-for="row in store.HighCountsGenus" :key="row.Name"></Microbe>
+        </div>
+        <div class="results">
+            <header>Detected in large amounts (Species)</header>
+            <Microbe class="result" :data="row" v-for="row in store.HighCountsSpecies" :key="row.Name"></Microbe>
         </div>
         <div class="results" v-for="x in species">
             <header>{{x.Name}}</header>
@@ -108,20 +120,6 @@
 
 <style lang="less">
     #app {
-        @apply flex flex-col min-h-0 min-w-0;
-
-        > header {
-            @apply bg-white border-b flex flex-wrap h-14 items-center px-2 space-x-2 sticky top-0 z-10;
-        }
-
-        .filter {
-            @apply border flex-1 px-2 py-1 rounded focus:outline-none focus:ring-2;
-        }
-
-        .no-data {
-            @apply absolute flex flex-1 inset-0 items-center justify-center;
-        }
-
         .results {
             @apply min-w-0 lg:grid lg:grid-cols-2 2xl:grid-cols-4;
 

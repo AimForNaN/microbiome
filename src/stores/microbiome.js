@@ -1,7 +1,21 @@
 import { defineStore } from 'pinia';
 import * as Papa from 'papaparse';
-import Row from './../lib/Row.js';
-import round from './../lib/round.js';
+import Row from '../lib/row.js';
+
+/**
+ * @type Microbiome
+ * @property {string} Name
+ * @property {string} Phylum
+ * @property {string} Class
+ * @property {string} Order
+ * @property {string} Family
+ * @property {string} Genus
+ * @property {string} Species
+ * @property {string} Subspecies
+ * @property {string} Strain
+ * @property {number} Average
+ * @property {number} Value
+ */
 
 export const useMicrobiomeStore = defineStore('microbiome', {
     state: () => ({
@@ -130,7 +144,7 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                     return item.Category == 'Phylum';
                 });
             },
-            Cls(state) {
+            Class(state) {
                 return state.csv.filter((item) => {
                     return item.Category == 'Class';
                 });
@@ -179,5 +193,23 @@ export const useMicrobiomeStore = defineStore('microbiome', {
                 return true;
             });
         },
+		HighCountsClass(state) {
+			var { Class } = state;
+			return Class.filter((row) => {
+				return row.Abundance > 0.05 && row.Comparison > 5 && (row.Abundance / row.Comparison) > 0.05;
+			});
+		},
+		HighCountsGenus(state) {
+			var { Genus } = state;
+			return Genus.filter((row) => {
+				return row.Abundance > 0.05 && row.Comparison > 5 && (row.Abundance / row.Comparison) > 0.05;
+			});
+		},
+		HighCountsSpecies(state) {
+			var { Species } = state;
+			return Species.filter((row) => {
+				return row.Abundance > 0.05 && row.Comparison > 5 && (row.Abundance / row.Comparison) > 0.05;
+			});
+		},
     },
 });

@@ -1,6 +1,6 @@
 # microbiome
 
-Thorne Gut Health full microbiome community test analyzer.
+Microbiome analyzer.
 
 ## Project Setup
 
