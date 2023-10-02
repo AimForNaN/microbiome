@@ -26,9 +26,9 @@
         var row = unref(data);
         return row.Cls;
     });
-    const comparison = computed(() => {
+    const percentile = computed(() => {
         var row = unref(data);
-        return row.Comparison;
+        return row.Percentile;
     });
     const family = computed(() => {
         var row = unref(data);
@@ -61,37 +61,11 @@
 </script>
 
 <template>
-    <div class="microbe">
+    <div class="flex">
         <span class="percent">{{abundance}}%</span>
-        <span class="name">{{name}}</span>
-        <span class="percent">
-            <template v-if="comparison">{{comparison}}%</template>
-        </span>
+        <span class="font-bold">{{name}}</span>
         <div class="categorization">
             <span v-for="item in categorization">{{item}}</span>
         </div>
     </div>
 </template>
-
-<style lang="less">
-    .microbe {
-        @apply grid items-baseline min-h-0 min-w-0 p-2 space-x-4;
-        grid-template-columns: 100px 1fr;
-
-        .percent {
-            @apply flex justify-end;
-        }
-
-        .categorization {
-            @apply flex flex-wrap text-gray-400 text-sm truncate min-w-0;
-
-            > * {
-                @apply pr-1;
-            }
-        }
-
-        .name {
-            @apply min-w-0 text-xl truncate;
-        }
-    }
-</style>

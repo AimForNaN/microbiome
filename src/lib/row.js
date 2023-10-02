@@ -1,5 +1,5 @@
 export default class Row {
-    row;
+    row = {};
 
     constructor(row) {
         this.row = row;

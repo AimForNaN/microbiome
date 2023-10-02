@@ -26,17 +26,7 @@ export default class Thorne extends Row {
     }
 
     get Name() {
-        var ret = [
-            this.Phylum,
-            this.Class,
-            this.Order,
-            this.Family,
-            this.Genus,
-            this.Species,
-            this.Subspecies,
-            this.Strain,
-        ].filter(x => x);
-        return ret.pop();
+        return this.Categorization.pop();
     }
 
     get Order() {
